@@ -12,8 +12,8 @@ const graceful = require('./graceful');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 var options = {
-    key: fs.readFileSync('keys/apininki.key'),
-    cert: fs.readFileSync('keys/api_ninkip2p_com.crt'),
+    key: fs.readFileSync('keys/mockserver.key'),
+    cert: fs.readFileSync('keys/mockserver.crt'),
     agent: false
 };
 
