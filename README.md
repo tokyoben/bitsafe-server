@@ -1,6 +1,6 @@
 # bitsafe-server
 
-This project is the migration of the Bitcoin wallet Ninki Wallet to bitsafe.
+This project is for the migration of the Bitcoin wallet "Ninki Wallet" to bitsafe.
 
 ***DO NOT RUN IN PRODUCTION***
 
@@ -16,3 +16,5 @@ Clone the repository and run the command: sudo docker-compose up
 ### Prerequisites
 
 docker, docker-compose
+
+
