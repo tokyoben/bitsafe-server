@@ -1,0 +1,47 @@
+version: '2'
+services:
+  postgserv:
+    build: './bitsafe-database'
+    environment:
+       - POSTGRES_DB bitsafe
+       - POSTGRES_USER postgres
+       - POSTGRES_PASSWORD notsafe123
+    ports:
+      - "5432:5432"
+    networks:
+       - mynetwork
+
+  netcore:
+    build: './bitsafe-net-core'
+    ports:
+       - 5000:5000
+    links:
+       - postgserv
+    depends_on:
+       - "postgserv"
+    networks:
+       - mynetwork
+
+  node:
+    build: './bitsafe-node'
+    ports:
+       - 1111:1111
+    links:
+       - netcore
+       - redis
+    depends_on:
+       - "netcore"
+       - "redis"
+    networks:
+       - mynetwork 
+
+  redis:
+    image: redis:4.0.5-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    networks:
+       - mynetwork 
+
+networks:
+  mynetwork:
+     driver: bridge
