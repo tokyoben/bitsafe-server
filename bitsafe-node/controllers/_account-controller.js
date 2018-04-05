@@ -1,6 +1,8 @@
 const config = require("../config.js");
 const domain = require('domain');
-const client = require('redis').createClient({"host":config.redisHost});
+const client = require('redis').createClient({
+    "host": config.redisHost
+});
 const validator = require('../helpers/_validation-helper.js')
 
 const request = require('request');
@@ -15,23 +17,25 @@ const apiToken = require('api-token');
 
 var nodemailer = require("nodemailer");
 
-var transport = nodemailer.createTransport("SES", {
-    AWSAccessKeyID: "AKIAJBWCQF362ZERJYDQ",
-    AWSSecretKey: "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",
-    ServiceUrl: "email-smtp.us-east-1.amazonaws.com"
+console.log(config)
+
+var transport = nodemailer.createTransport(config.mailTransport, {
+    AWSAccessKeyID: config.mailKeyID,
+    AWSSecretKey: config.mailSecret,
+    ServiceUrl: config.mailServiceURL
 });
 
 apiToken.setDb(client);
 
 var route = '/account';
 
-function postToRoute(options, callback){
+function postToRoute(options, callback) {
 
-  request.post(options, function(err, result) {
+    request.post(options, function(err, result) {
 
-      callback(err,result);
+        callback(err, result);
 
-  });
+    });
 
 }
 
@@ -1322,7 +1326,7 @@ exports.createAccount2 = function(req, res) {
 
                                             if (req.body.emailAddress.length > 0) {
 
-                                                var token = JSON.parse(vResult).result;
+                                                var token = JSON.parse(vResult).message;
                                                 var email = req.body.emailAddress;
                                                 var nl = '\r\n\r\n';
                                                 var htnl = '<br/>';
@@ -1340,7 +1344,8 @@ exports.createAccount2 = function(req, res) {
 
                                                 transport.sendMail(mailOptions, function(error, response) {
                                                     if (error) {
-                                                        //console.log(error);
+
+                                                        console.log(error);
 
                                                         res.send(500, "ErrSendMail")
 
@@ -1965,7 +1970,7 @@ exports.getUserPacket = function(req, res) {
             if (pass) {
 
                 var options = {
-                    'url': config.upstreamServer.baseUrl + route +'/GetUserPacket',
+                    'url': config.upstreamServer.baseUrl + route + '/GetUserPacket',
                     'proxy': config.proxyServer.url,
                     'form': {
                         guid: req.body.guid,

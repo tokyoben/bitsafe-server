@@ -1,37 +1,25 @@
-"use strict";
-var ISNODEENV = (typeof module !== 'undefined' && module.exports);
+config = {
+    upstreamServer: {
+        protocol: process.env.BITSAFE_UPSTREAM_PROTOCOL, //"http"
+        hostname: process.env.BITSAFE_UPSTREAM_SERVER, //"netcore"
+        port: process.env.BITSAFE_UPSTREAM_PORT, //"5000"
+        basePath: process.env.BITSAFE_UPSTREAM_PATH //"/api"
 
-var config = {
-    walletSecurity: {
-        minimumPasswordLength: 5, //Bi-directional encryption
-        minimumPassphraseLength: 10, //Public key encryption
-        rsaKeyBitLength: 512
     },
-    thisServer: {
-        protocol: "https",
-        hostname: "localhost",
-        port: "1111",
-        basePath: ""
+    proxyServer: {
+        url: ''
     },
-    thisWebServer: {
-        protocol: "https",
-        hostname: "netcore",
-        port: "1112",
-        basePath: ""
-    },
-    redisHost: "redis"
+    redisHost: process.env.BITSAFE_REDIS_HOST,
+    mailTransport: process.env.BITSAFE_MAIL_TRANSPORT,
+    mailKeyID: process.env.BITSAFE_MAIL_KEY_ID,
+    mailSecret: process.env.BITSAFE_MAIL_SECRET,
+    mailServiceURL: process.env.BITSAFE_MAIL_SERVICE,
+    nodeServicePort: process.env.BITSAFE_NODE_SERVICE_PORT,
+    nodeServiceSSLKey: process.env.BITSAFE_NODE_SERVICE_SSL_KEY,
+    nodeServiceSSLCert: process.env.BITSAFE_NODE_SERVICE_SSL_CERT,
+
 }
 
-config.thisServer.baseUrl = config.thisServer.protocol + '://' +
-    config.thisServer.hostname + ':' + config.thisServer.port +
-    config.thisServer.basePath;
+config.upstreamServer.baseUrl = config.upstreamServer.protocol + "://" + config.upstreamServer.hostname + ":" + config.upstreamServer.port + "/" + config.upstreamServer.basePath
 
-config.thisWebServer.baseUrl = config.thisWebServer.protocol + '://' +
-    config.thisWebServer.hostname + ':' + config.thisWebServer.port +
-    config.thisWebServer.basePath;
-
-if (ISNODEENV) {
-    config.upstreamServer = require("./config/").upstreamServer;
-    config.proxyServer = require("./config/").proxyServer;
-    module.exports = config;
-}
+module.exports = config;

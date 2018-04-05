@@ -18,6 +18,14 @@ function writeUnitTestData() {
 
 }
 
+var nodemailer = require("nodemailer");
+
+var transport = nodemailer.createTransport(config.mailTransport, {
+    AWSAccessKeyID: config.mailKeyID,
+    AWSSecretKey: config.mailSecret,
+    ServiceUrl: config.mailServiceURL
+});
+
 var route = "/account"
 
 exports.requestAuthMigration = function(req, res) {

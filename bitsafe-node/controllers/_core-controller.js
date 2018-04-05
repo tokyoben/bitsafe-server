@@ -196,7 +196,7 @@ exports.getVersion = function(req, res) {
 
             if (pass) {
 
-                //console.log(config.upstreamServer.baseUrl)
+                console.log(config.upstreamServer.baseUrl)
                 var options = {
                     'url': config.upstreamServer.baseUrl + route + '/GetVersion',
                     'proxy': config.proxyServer.url

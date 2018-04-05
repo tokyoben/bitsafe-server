@@ -8,18 +8,19 @@ const http = require("http");
 const https = require("https");
 const router = require('./router');
 const graceful = require('./graceful');
+const config = require("./config.js");
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 var options = {
-    key: fs.readFileSync('keys/mockserver.key'),
-    cert: fs.readFileSync('keys/mockserver.crt'),
+    key: fs.readFileSync(config.nodeServiceSSLKey),
+    cert: fs.readFileSync(config.nodeServiceSSLCert),
     agent: false
 };
 
 const server = https.createServer(options,app);
 
-var port = 1111;
+var port = config.nodeServicePort;
 
 app.use(function (req, res, next) {
     res.set("Access-Control-Allow-Origin", "*");
