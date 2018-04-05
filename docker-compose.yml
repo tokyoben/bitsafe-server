@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   postgserv:
     build: './bitsafe-database'
@@ -33,7 +33,10 @@ services:
        - "netcore"
        - "redis"
     networks:
-       - mynetwork 
+       - mynetwork
+    env_file:
+       - bitsafe.env
+
 
   redis:
     image: redis:4.0.5-alpine
